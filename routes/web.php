@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get("hello/{name?}", function ($name = null ) {
+Route::get("hello/{name?}", function ($name = null) {
     if ($name) {
         echo "Hello " . $name . "!";
     } else {
@@ -36,6 +37,21 @@ Route::post("login", function (Illuminate\Http\Request $request) {
     $discountPercent = $price * $discountPrice * 0.1; // số chiết khấu
     $discountAmount = $price - $discountPercent; // sau khi chiết khấu
 
-    return view('welcome_admin', compact(["productDescription","price","discountAmount","discountPercent","discountPrice"]));
+    return view('welcome_admin', compact(["productDescription", "price", "discountAmount", "discountPercent", "discountPrice"]));
+});
 
+Route::get("translate", function () {
+    return view("translate");
+});
+
+Route::post("translate", function (Request $english) {
+
+    $array = ["hello" => "xin chào", "book" => "sách", "bye" => "tạm biệt"];
+    if (array_key_exists($english->english, $array)) {
+        $en = $english->english;
+        $vn = $array[$english->english];
+        return view("translate", compact(['en', 'vn']));
+    } else {
+        echo "từ này không có trong từ điển";
+    }
 });
